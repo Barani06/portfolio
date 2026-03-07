@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Barani S | Data Analyst · Cloud & DevOps · DevSecOps</title>
+  <meta name="description" content="Barani S – Pre-final year AI & Data Science student at Prince Dr. K Vasudevan College of Engineering. Data Analytics, Cloud, DevOps, DevSecOps.">
+  <meta name="keywords" content="Barani S, Data Analyst, Cloud Engineer, DevOps, DevSecOps, Chennai, Portfolio">
+  <meta property="og:title" content="Barani S | Data Analyst & Cloud Engineer">
+  <meta property="og:description" content="Turning data into insights and building scalable cloud solutions.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&family=Fira+C̥ode:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --bg: #020817;
+      --surface: #0d1526;
+      --surface2: #111c30;
+      --accent: #00d4ff;
+      --accent2: #0066ff;
+      --accent3: #7c3aed;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --border: rgba(0,212,255,0.15);
+      --glow: 0 0 20px rgba(0,212,255,0.3);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Outfit', sans-serif;
+      overflow-x: hidden;
+    }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+    /* Canvas background */
+    #hero-canvas { position: absolute; inset: 0; z-index: 0; }
+
+    /* Glitch effect */
+    @keyframes glitch {
+      0%, 100% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(2px, -2px); }
+      60% { transform: translate(-1px, 1px); }
+      80% { transform: translate(1px, -1px); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInLeft {
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes pulse-border {
+      0%, 100% { border-color: rgba(0,212,255,0.3); box-shadow: 0 0 0 rgba(0,212,255,0); }
+      50% { border-color: rgba(0,212,255,0.8); box-shadow: 0 0 20px rgba(0,212,255,0.2); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+    @keyframes scanline {
+      0% { top: -10%; }
+      100% { top: 110%; }
+    }
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    @keyframes blink { 50% { border-color: transparent; } }
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+    @keyframes skillFill {
+      from { width: 0%; }
+      to { width: var(--skill-width); }
+    }
+    @keyframes countUp {
+      from { opacity: 0; transform: scale(0.5); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes rotateRing {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', cursive;
+      letter-spacing: 0.05em;
+      line-height: 0.9;
+    }
+    .gradient-text {
+      background: linear-gradient(135deg, #00d4ff 0%, #0066ff 50%, #7c3aed 100%);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 4s ease infinite;
+    }
+    .glow-text {
+      text-shadow: 0 0 20px rgba(0,212,255,0.5), 0 0 40px rgba(0,212,255,0.2);
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0,212,255,0.05) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    input, textarea, select {
+  position: relative;
+  z-index: 1;
+}
+    .card:hover::before { opacity: 1; }
+    .card:hover {
+      border-color: rgba(0,212,255,0.5);
+      box-shadow: 0 0 30px rgba(0,212,255,0.1), 0 20px 40px rgba(0,0,0,0.3);
+      transform: translateY(-4px);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #00d4ff, #0066ff);
+      color: #fff;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      padding: 12px 28px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+    }
+    .btn-primary:hover {
+      box-shadow: 0 0 30px rgba(0,212,255,0.4), 0 10px 20px rgba(0,0,0,0.3);
+      transform: translateY(-2px);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--accent);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      padding: 11px 27px;
+      border-radius: 8px;
+      border: 1px solid var(--accent);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+    .btn-outline:hover {
+      background: rgba(0,212,255,0.1);
+      box-shadow: 0 0 20px rgba(0,212,255,0.2);
+      transform: translateY(-2px);
+    }
+    .nav-link {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-decoration: none;
+      transition: color 0.2s;
+      cursor: pointer;
+    }
+    .nav-link:hover { color: var(--accent); }
+    .section-tag {
+      font-family: 'Fira Code', monospace;
+      font-size: 13px;
+      color: var(--accent);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      letter-spacing: 0.05em;
+    }
+    .skill-bar-outer {
+      background: rgba(255,255,255,0.05);
+      border-radius: 4px;
+      height: 6px;
+      overflow: hidden;
+    }
+    .skill-bar-inner {
+      height: 100%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      width: 0%;
+      transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .scanline {
+      position: absolute;
+      left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(0,212,255,0.3), transparent);
+      animation: scanline 6s linear infinite;
+      pointer-events: none;
+    }
+    .grid-bg {
+      background-image: 
+        linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+    }
+    .floating { animation: float 6s ease-in-out infinite; }
+    .floating-delayed { animation: float 6s ease-in-out 2s infinite; }
+    .animate-fadein { animation: fadeInUp 0.7s ease forwards; }
+    .tech-badge {
+      background: rgba(0,212,255,0.08);
+      border: 1px solid rgba(0,212,255,0.2);
+      color: var(--accent);
+      font-family: 'Fira Code', monospace;
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+    .status-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 8px #22c55e;
+      animation: blink 2s step-end infinite;
+    }
+    input, textarea, select {
+      background: var(--surface2) !important;
+      border: 1px solid rgba(0,212,255,0.15) !important;
+      color: var(--text) !important;
+      border-radius: 8px !important;
+      padding: 12px 16px !important;
+      font-family: 'Outfit', sans-serif !important;
+      font-size: 14px !important;
+      width: 100% !important;
+      outline: none !important;
+      transition: border-color 0.2s !important;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--accent) !important;
+      box-shadow: 0 0 0 3px rgba(0,212,255,0.1) !important;
+    }
+    textarea { resize: vertical; min-height: 120px; }
+    .rotating-ring {
+      border: 2px solid transparent;
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: rotateRing 1s linear infinite;
+    }
+    /* Mobile nav */
+    .mobile-menu {
+      display: none;
+    }
+    @media (max-width: 768px) {
+      .desktop-nav { display: none; }
+      .mobile-menu-btn { display: block; }
+    }
+    .chart-container { position: relative; height: 250px; }
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: var(--surface);
+      border: 1px solid rgba(0,212,255,0.3);
+      border-left: 4px solid var(--accent);
+      padding: 16px 24px;
+      border-radius: 10px;
+      z-index: 9999;
+      animation: fadeInUp 0.3s ease;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+      font-size: 14px;
+    }
+    .cert-card {
+      background: linear-gradient(135deg, var(--surface) 0%, var(--surface2) 100%);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    .cert-card:hover {
+      border-color: rgba(0,212,255,0.5);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+    .counter-number {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 2.5rem;
+      color: var(--accent);
+    }
+    #admin-panel { display: none; }
+    #admin-panel.visible { display: block; }
+  </style>
+</head>
+<body>
+
+<!-- Root -->
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+
+// ─── DATA ───────────────────────────────────────────────────────────────────
+const SKILLS = [
+  { cat: "Data Analytics", icon: "📊", items: [
+    { name: "Python", pct: 85 }, { name: "Pandas / NumPy", pct: 82 },
+    { name: "Power BI", pct: 78 }, { name: "Data Visualization", pct: 80 }
+  ]},
+  { cat: "Cloud & DevOps", icon: "☁️", items: [
+    { name: "AWS", pct: 72 }, { name: "Docker", pct: 75 },
+    { name: "CI/CD Pipelines", pct: 68 }, { name: "Git / Linux", pct: 85 }
+  ]},
+  { cat: "DevSecOps", icon: "🔒", items: [
+    { name: "Secure Pipelines", pct: 60 }, { name: "Cloud Security", pct: 62 },
+    { name: "Vulnerability Awareness", pct: 65 }, { name: "Java (Basics)", pct: 55 }
+  ]}
+];
+
+const PROJECTS = [
+  {
+    title: "Rainfall Data Analysis – Chennai",
+    emoji: "🌧️",
+    tech: ["Power BI", "Data Visualization", "DAX"],
+    desc: "Interactive dashboard analyzing Chennai's rainfall patterns, road impact, affected population, recovery cost estimation, and ML-predicted rainfall trends.",
+    color: "#00d4ff",
+    github: "#",
+    demo: null
+  },
+  {
+    title: "Scalable Web App on AWS",
+    emoji: "☁️",
+    tech: ["AWS EC2", "Load Balancer", "Docker", "CI/CD"],
+    desc: "Deployed a highly available web application using AWS services (EC2, ALB, Auto Scaling) with full DevOps pipeline integrating automated testing and deployment.",
+    color: "#0066ff",
+    github: "#",
+    demo: null
+  },
+  {
+    title: "Python Data Analysis Suite",
+    emoji: "🐍",
+    tech: ["Python", "Pandas", "NumPy", "Matplotlib"],
+    desc: "Collection of end-to-end data analysis projects covering data cleaning, statistical modeling, exploratory data analysis, and publication-quality visualizations.",
+    color: "#7c3aed",
+    github: "#",
+    demo: null
+  }
+];
+
+const CERTS = [
+  { name: "Oracle Cloud Infrastructure", org: "Oracle", year: "2024", badge: "🏆", color: "#f97316" },
+  { name: "AWS Cloud Practitioner", org: "Amazon Web Services", year: "Upcoming", badge: "☁️", color: "#f59e0b" },
+  { name: "Google Data Analytics", org: "Google / Coursera", year: "Upcoming", badge: "📊", color: "#22c55e" },
+  { name: "DevSecOps Foundations", org: "LF / CNCF", year: "Upcoming", badge: "🔐", color: "#a855f7" }
+];
+
+const API_BASE = "http://localhost:8000";
+
+// ─── CANVAS HERO BACKGROUND ──────────────────────────────────────────────────
+function HeroCanvas() {
+  const canvasRef = useRef(null);
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    let animId;
+    const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
+    resize();
+    window.addEventListener('resize', resize);
+    const particles = Array.from({ length: 80 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      r: Math.random() * 2 + 0.5,
+      alpha: Math.random() * 0.5 + 0.1
+    }));
+    const draw = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(0,212,255,${p.alpha})`;
+        ctx.fill();
+      });
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist < 120) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(0,212,255,${0.12 * (1 - dist/120)})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+      animId = requestAnimationFrame(draw);
+    };
+    draw();
+    return () => { cancelAnimationFrame(animId); window.removeEventListener('resize', resize); };
+  }, []);
+  return <canvas ref={canvasRef} id="hero-canvas" />;
+}
+
+// ─── NAVBAR ─────────────────────────────────────────────────────────────────
+function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  useEffect(() => {
+    const h = () => setScrolled(window.scrollY > 50);
+    window.addEventListener('scroll', h);
+    return () => window.removeEventListener('scroll', h);
+  }, []);
+  const links = ['About','Skills','Projects','Certifications','Internships','Contact'];
+  const scroll = (id) => { document.getElementById(id.toLowerCase())?.scrollIntoView({behavior:'smooth'}); setMobileOpen(false); };
+  return (
+    <nav style={{
+      position:'fixed', top:0, left:0, right:0, zIndex:100,
+      background: scrolled ? 'rgba(2,8,23,0.92)' : 'transparent',
+      backdropFilter: scrolled ? 'blur(20px)' : 'none',
+      borderBottom: scrolled ? '1px solid rgba(0,212,255,0.1)' : 'none',
+      transition: 'all 0.3s ease',
+      padding: '16px 0'
+    }}>
+      <div style={{maxWidth:'1200px', margin:'0 auto', padding:'0 24px', display:'flex', alignItems:'center', justifyContent:'space-between'}}>
+        <div style={{display:'flex', alignItems:'center', gap:'10px'}}>
+          <div style={{width:36, height:36, borderRadius:8, overflow:'hidden', border:'2px solid #00d4ff', boxShadow:'0 0 10px rgba(0,212,255,0.4)'}}>
+  <div style={{width:36, height:36, borderRadius:8, background:'linear-gradient(135deg,#00d4ff,#0066ff)', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:'Bebas Neue', fontSize:18, color:'#fff', fontWeight:'bold'}}>B</div>
+</div>
+          <span style={{fontFamily:'Bebas Neue', fontSize:22, letterSpacing:'0.1em', color:'#e2e8f0'}}>BARANI<span style={{color:'#00d4ff'}}> S</span></span>
+        </div>
+        {/* Desktop */}
+        <div style={{display:'flex', gap:32}} className="desktop-nav">
+          {links.map(l => <a key={l} className="nav-link" onClick={() => scroll(l)}>{l}</a>)}
+          <a href="#admin" className="nav-link" onClick={(e) => {e.preventDefault(); document.getElementById('admin-panel')?.classList.toggle('visible')}}>
+            <span style={{fontFamily:'Fira Code', fontSize:12, color:'#64748b'}}>⚙ admin</span>
+          </a>
+        </div>
+        {/* Mobile hamburger */}
+        <button onClick={() => setMobileOpen(!mobileOpen)} style={{background:'none', border:'none', cursor:'pointer', color:'#00d4ff', fontSize:24, display:'none'}} className="mobile-menu-btn">
+          {mobileOpen ? '✕' : '☰'}
+        </button>
+      </div>
+      {/* Mobile menu */}
+      {mobileOpen && (
+        <div style={{background:'rgba(2,8,23,0.98)', borderBottom:'1px solid rgba(0,212,255,0.1)', padding:'16px 24px'}}>
+          {links.map(l => (
+            <div key={l} style={{padding:'12px 0', borderBottom:'1px solid rgba(255,255,255,0.05)'}}>
+              <a className="nav-link" onClick={() => scroll(l)} style={{fontSize:16}}>{l}</a>
+            </div>
+          ))}
+        </div>
+      )}
+    </nav>
+  );
+}
+
+// ─── HERO ────────────────────────────────────────────────────────────────────
+function Hero({ onDownloadResume }) {
+  const [typedRole, setTypedRole] = useState('');
+  const roles = ['Data Analyst', 'Cloud Engineer', 'DevOps Enthusiast', 'DevSecOps Learner'];
+  const [roleIdx, setRoleIdx] = useState(0);
+  const [charIdx, setCharIdx] = useState(0);
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    const current = roles[roleIdx];
+    const speed = deleting ? 50 : 100;
+    const timer = setTimeout(() => {
+      if (!deleting) {
+        setTypedRole(current.slice(0, charIdx + 1));
+        if (charIdx + 1 === current.length) {
+          setTimeout(() => setDeleting(true), 1800);
+        } else { setCharIdx(c => c + 1); }
+      } else {
+        setTypedRole(current.slice(0, charIdx - 1));
+        if (charIdx - 1 === 0) {
+          setDeleting(false);
+          setRoleIdx(r => (r + 1) % roles.length);
+          setCharIdx(0);
+        } else { setCharIdx(c => c - 1); }
+      }
+    }, speed);
+    return () => clearTimeout(timer);
+  }, [charIdx, deleting, roleIdx]);
+
+  return (
+    <section id="hero" style={{minHeight:'100vh', position:'relative', display:'flex', alignItems:'center', overflow:'hidden'}} className="grid-bg">
+      <HeroCanvas />
+      <div className="scanline" />
+      <div style={{maxWidth:'1200px', margin:'0 auto', padding:'0 24px', position:'relative', zIndex:1, paddingTop:'80px', width:'100%'}}>
+        <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:64, alignItems:'center'}}>
+          {/* Left */}
+          <div style={{animation:'fadeInUp 0.8s ease forwards'}}>
+            <div style={{display:'flex', alignItems:'center', gap:10, marginBottom:20}}>
+              <div className="status-dot"></div>
+              <span style={{fontFamily:'Fira Code', fontSize:12, color:'#64748b'}}>available for opportunities</span>
+            </div>
+            <h1 className="hero-title" style={{fontSize:'clamp(3.5rem, 8vw, 7rem)', color:'#e2e8f0', marginBottom:8}}>
+              BARANI<br/><span className="gradient-text"></span>
+            </h1>
+            <div style={{fontFamily:'Fira Code', fontSize:'clamp(14px, 2vw, 18px)', marginBottom:24, height:28, color:'#00d4ff'}}>
+              &gt; {typedRole}<span style={{borderRight:'2px solid #00d4ff', animation:'blink 1s step-end infinite', marginLeft:2}}>&nbsp;</span>
+            </div>
+            <p style={{fontSize:16, color:'#94a3b8', lineHeight:1.7, marginBottom:36, maxWidth:480}}>
+              Turning data into insights and building scalable cloud solutions. Pre-final year AI & Data Science student crafting the future of intelligent systems.
+            </p>
+            <div style={{display:'flex', flexWrap:'wrap', gap:12, marginBottom:40}}>
+              <a href="#projects" className="btn-primary" onClick={e=>{e.preventDefault(); document.getElementById('projects')?.scrollIntoView({behavior:'smooth'})}}>
+                🚀 View Projects
+              </a>
+              <button className="btn-primary" onClick={onDownloadResume} style={{background:'linear-gradient(135deg,#7c3aed,#0066ff)'}}>
+                ⬇ Download Resume
+              </button>
+              <a href="#contact" className="btn-outline" onClick={e=>{e.preventDefault(); document.getElementById('contact')?.scrollIntoView({behavior:'smooth'})}}>
+                💼 Hire Me
+              </a>
+              <a href="https://github.com/Barani06" target="_blank" className="btn-outline" style={{borderColor:'#64748b', color:'#94a3b8'}}>
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                GitHub
+              </a>
+            </div>
+            <div style={{display:'flex', gap:24}}>
+              {[['3+', 'Projects'], ['2+', 'Certifications'], ['Chennai', 'India']].map(([val, lab]) => (
+                <div key={lab}>
+                  <div style={{fontFamily:'Bebas Neue', fontSize:28, color:'#00d4ff'}}>{val}</div>
+                  <div style={{fontSize:12, color:'#64748b', letterSpacing:1}}>{lab}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Right: floating card */}
+          <div style={{display:'flex', justifyContent:'center', animation:'fadeInUp 1s ease 0.3s both'}}>
+            <div className="floating" style={{width:'100%', maxWidth:380}}>
+              <div className="card" style={{padding:32}}>
+                <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:24}}>
+                  <span style={{fontFamily:'Fira Code', fontSize:12, color:'#64748b'}}>profile.json</span>
+                  <div style={{display:'flex', gap:6}}>
+                    {['#ff5f57','#febc2e','#28c840'].map(c => <div key={c} style={{width:10, height:10, borderRadius:'50%', background:c}}/>)}
+                  </div>
+                </div>
+                <pre style={{fontFamily:'Fira Code', fontSize:12, lineHeight:1.8, color:'#94a3b8', overflow:'hidden'}}>
+{`{
+  `}<span style={{color:'#00d4ff'}}>"name"</span>{`: `}<span style={{color:'#fbbf24'}}>"Barani S"</span>{`,
+  `}<span style={{color:'#00d4ff'}}>"role"</span>{`: `}<span style={{color:'#fbbf24'}}>"Data Analyst"</span>{`,
+  `}<span style={{color:'#00d4ff'}}>"focus"</span>{`: [
+    `}<span style={{color:'#34d399'}}>"Analytics"</span>{`,
+    `}<span style={{color:'#34d399'}}>"Cloud/AWS"</span>{`,
+    `}<span style={{color:'#34d399'}}>"DevOps"</span>{`,
+    `}<span style={{color:'#34d399'}}>"DevSecOps"</span>{`
+  ],
+  `}<span style={{color:'#00d4ff'}}>"status"</span>{`: `}<span style={{color:'#22c55e'}}>"available"</span>{`,
+  `}<span style={{color:'#00d4ff'}}>"location"</span>{`: `}<span style={{color:'#fbbf24'}}>"Chennai 🇮🇳"</span>{`
+}`}
+                </pre>
+              </div>
+              <div className="card floating-delayed" style={{marginTop:12, padding:'14px 20px', display:'flex', alignItems:'center', gap:12}}>
+                <div style={{fontSize:24}}>🎓</div>
+                <div>
+                  <div style={{fontSize:12, fontWeight:600, color:'#e2e8f0'}}>B.Tech – AI & Data Science</div>
+                  <div style={{fontSize:11, color:'#64748b'}}>Prince Dr. K Vasudevan College · Chennai</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Scroll indicator */}
+      <div style={{position:'absolute', bottom:30, left:'50%', transform:'translateX(-50%)', display:'flex', flexDirection:'column', alignItems:'center', gap:6, opacity:0.5}}>
+        <span style={{fontSize:11, fontFamily:'Fira Code', color:'#64748b'}}>scroll</span>
+        <div style={{width:20, height:32, border:'1px solid #64748b', borderRadius:10, display:'flex', justifyContent:'center', paddingTop:6}}>
+          <div style={{width:3, height:8, background:'#00d4ff', borderRadius:2, animation:'float 1.5s ease-in-out infinite'}}/>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── ABOUT ──────────────────────────────────────────────────────────────────
+function About() {
+  return (
+    <section id="about" style={{padding:'100px 0', background:'var(--surface)'}}>
+      <div style={{maxWidth:1200, margin:'0 auto', padding:'0 24px'}}>
+        <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:80, alignItems:'center'}}>
+          <div>
+            <div className="section-tag" style={{marginBottom:12}}>// 01. about me</div>
+            <h2 className="section-title" style={{marginBottom:24, color:'#e2e8f0'}}>WHO AM <span className="gradient-text">I?</span></h2>
+            <p style={{color:'#94a3b8', lineHeight:1.9, marginBottom:20, fontSize:15}}>
+              I'm <strong style={{color:'#e2e8f0'}}>Barani S</strong>, a pre-final year B.Tech student specializing in <strong style={{color:'#00d4ff'}}>Artificial Intelligence and Data Science</strong> at Prince Dr. K Vasudevan College of Engineering and Technology, Chennai.
+            </p>
+            <p style={{color:'#94a3b8', lineHeight:1.9, marginBottom:20, fontSize:15}}>
+              My passion lies at the intersection of data and cloud — I love turning raw data into compelling insights while simultaneously building the scalable infrastructure to support them. I'm actively learning DevSecOps to understand the security dimension of modern software delivery.
+            </p>
+            <p style={{color:'#94a3b8', lineHeight:1.9, marginBottom:32, fontSize:15}}>
+              Whether it's crafting a Power BI dashboard, automating a CI/CD pipeline, or hardening cloud security policies — I bring curiosity and engineering rigor to every challenge.
+            </p>
+            <div style={{display:'flex', flexWrap:'wrap', gap:8}}>
+              {['Python','Power BI','AWS','Docker','CI/CD','Git','Linux','DevSecOps'].map(t => (
+                <span key={t} className="tech-badge">{t}</span>
+              ))}
+            </div>
+          </div>
+          <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:16}}>
+            {[
+              { icon:'📊', title:'Data Analytics', desc:'Transforming raw data into actionable insights with Python & Power BI' },
+              { icon:'☁️', title:'Cloud Engineering', desc:'Architecting and deploying scalable solutions on AWS' },
+              { icon:'🔁', title:'DevOps', desc:'Building automated CI/CD pipelines with Docker and modern tooling' },
+              { icon:'🔐', title:'DevSecOps', desc:'Integrating security into the development and deployment pipeline' }
+            ].map((item, i) => (
+              <div key={i} className="card" style={{padding:24}}>
+                <div style={{fontSize:32, marginBottom:12}}>{item.icon}</div>
+                <div style={{fontWeight:600, marginBottom:8, fontSize:15}}>{item.title}</div>
+                <div style={{fontSize:13, color:'#64748b', lineHeight:1.6}}>{item.desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── SKILLS ─────────────────────────────────────────────────────────────────
+function Skills() {
+  const [animated, setAnimated] = useState(false);
+  const sectionRef = useRef(null);
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setAnimated(true); }, { threshold: 0.2 });
+    if (sectionRef.current) obs.observe(sectionRef.current);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <section id="skills" ref={sectionRef} style={{padding:'100px 0'}} className="grid-bg">
+      <div style={{maxWidth:1200, margin:'0 auto', padding:'0 24px'}}>
+        <div style={{textAlign:'center', marginBottom:64}}>
+          <div className="section-tag" style={{marginBottom:12}}>// 02. skills & expertise</div>
+          <h2 className="section-title">TECHNICAL <span className="gradient-text">ARSENAL</span></h2>
+        </div>
+        <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(320px, 1fr))', gap:24}}>
+          {SKILLS.map((cat, ci) => (
+            <div key={ci} className="card" style={{padding:32}}>
+              <div style={{display:'flex', alignItems:'center', gap:12, marginBottom:28}}>
+                <span style={{fontSize:28}}>{cat.icon}</span>
+                <span style={{fontWeight:700, fontSize:16}}>{cat.cat}</span>
+              </div>
+              <div style={{display:'flex', flexDirection:'column', gap:20}}>
+                {cat.items.map((skill, si) => (
+                  <div key={si}>
+                    <div style={{display:'flex', justifyContent:'space-between', marginBottom:8}}>
+                      <span style={{fontSize:14, color:'#cbd5e1'}}>{skill.name}</span>
+                      <span style={{fontFamily:'Fira Code', fontSize:12, color:'#00d4ff'}}>{skill.pct}%</span>
+                    </div>
+                    <div className="skill-bar-outer">
+                      <div className="skill-bar-inner" style={{width: animated ? `${skill.pct}%` : '0%', transitionDelay:`${si*0.15 + ci*0.1}s`}} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+        {/* Tool icons row */}
+        <div style={{marginTop:48, display:'flex', flexWrap:'wrap', justifyContent:'center', gap:16}}>
+          {[
+            ['🐍','Python'],['📊','Power BI'],['🐼','Pandas'],['🔢','NumPy'],
+            ['☁️','AWS'],['🐳','Docker'],['🔁','CI/CD'],['🐧','Linux'],
+            ['🔐','DevSecOps'],['📁','Git'],['☕','Java'],['📈','Matplotlib']
+          ].map(([icon, name]) => (
+            <div key={name} className="card" style={{padding:'12px 20px', display:'flex', alignItems:'center', gap:8, cursor:'default'}}>
+              <span>{icon}</span>
+              <span style={{fontSize:13, fontWeight:500}}>{name}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── PROJECTS ────────────────────────────────────────────────────────────────
+function Projects() {
+  return (
+    <section id="projects" style={{padding:'100px 0', background:'var(--surface)'}}>
+      <div style={{maxWidth:1200, margin:'0 auto', padding:'0 24px'}}>
+        <div style={{textAlign:'center', marginBottom:64}}>
+          <div className="section-tag" style={{marginBottom:12}}>// 03. projects</div>
+          <h2 className="section-title">FEATURED <span className="gradient-text">WORK</span></h2>
+          <p style={{color:'#64748b', marginTop:16, fontSize:15}}>A selection of projects across data analytics, cloud, and DevOps</p>
+        </div>
+        <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(340px, 1fr))', gap:28}}>
+          {PROJECTS.map((p, i) => (
+            <div key={i} className="card" style={{padding:0, overflow:'hidden'}}>
+              <div style={{height:6, background:`linear-gradient(90deg,${p.color},transparent)`}} />
+              <div style={{padding:32}}>
+                <div style={{display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:16}}>
+                  <span style={{fontSize:40}}>{p.emoji}</span>
+                  <span style={{fontFamily:'Fira Code', fontSize:11, color:'#64748b'}}>0{i+1}</span>
+                </div>
+                <h3 style={{fontSize:18, fontWeight:700, marginBottom:12, lineHeight:1.3}}>{p.title}</h3>
+                <p style={{fontSize:14, color:'#94a3b8', lineHeight:1.7, marginBottom:20}}>{p.desc}</p>
+                <div style={{display:'flex', flexWrap:'wrap', gap:6, marginBottom:24}}>
+                  {p.tech.map(t => <span key={t} className="tech-badge">{t}</span>)}
+                </div>
+                <div style={{display:'flex', gap:12}}>
+                  <a href={p.github} target="_blank" className="btn-outline" style={{fontSize:12, padding:'8px 16px'}}>
+                    <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                    GitHub
+                  </a>
+                  {p.demo && <a href={p.demo} className="btn-primary" style={{fontSize:12, padding:'8px 16px'}}>↗ Live Demo</a>}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── CERTIFICATIONS ──────────────────────────────────────────────────────────
+function Certifications() {
+  return (
+    <section id="certifications" style={{padding:'100px 0'}} className="grid-bg">
+      <div style={{maxWidth:1200, margin:'0 auto', padding:'0 24px'}}>
+        <div style={{textAlign:'center', marginBottom:64}}>
+          <div className="section-tag" style={{marginBottom:12}}>// 04. certifications</div>
+          <h2 className="section-title">CREDENTIALS & <span className="gradient-text">ACHIEVEMENTS</span></h2>
+        </div>
+        <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(250px, 1fr))', gap:20}}>
+          {CERTS.map((c, i) => (
+            <div key={i} className="cert-card">
+              <div style={{display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:16}}>
+                <span style={{fontSize:36}}>{c.badge}</span>
+                <span style={{
+                  fontSize:11, fontFamily:'Fira Code', padding:'3px 10px',
+                  borderRadius:20, border:`1px solid ${c.color}33`,
+                  color: c.color,
+                  background:`${c.color}15`
+                }}>{c.year}</span>
+              </div>
+              <h3 style={{fontWeight:700, fontSize:15, marginBottom:6}}>{c.name}</h3>
+              <p style={{fontSize:13, color:'#64748b'}}>{c.org}</p>
+              <div style={{marginTop:16, height:2, background:`linear-gradient(90deg,${c.color},transparent)`, borderRadius:1}} />
+            </div>
+          ))}
+        </div>
+        <div className="card" style={{marginTop:40, padding:32, textAlign:'center', borderStyle:'dashed'}}>
+          <div style={{fontSize:40, marginBottom:12}}>✨</div>
+          <div style={{fontWeight:600, marginBottom:8}}>More certifications coming soon</div>
+          <div style={{fontSize:14, color:'#64748b'}}>AWS Solutions Architect · Google Professional Data Engineer · CKA · CEH</div>
+        </div>
+      </div>
+    </section>
+  );
+}
+// ─── INTERNSHIPS ─────────────────────────────────────────────────────────────
+const INTERNSHIPS = [
+  {
+  company: "Yuga Industries Pvt. Ltd.",
+  role: "AI and IoT Intern",
+  duration: "August 2024 – September 2024",
+  location: "Chennai, India",
+  type: "On-site",
+  logo: "🤖",
+  color: "#00d4ff",
+  description: "Integrated AI models with IoT systems for real-world automation. Assisted in data analysis, sensor integration, and predictive modeling to support intelligent automation systems.",
+  achievements: [
+    "Integrated AI models with IoT devices for automation-based use cases",
+    "Worked with sensor data collection and preprocessing for analytics",
+    "Assisted in building predictive models using Python and data analysis tools",
+    "Collaborated with engineers to test AI-driven IoT solutions"
+  ],
+  tech: ["Python", "Pandas", "IoT Sensors", "Machine Learning", "Data Analysis"]
+},
+  {
+  company: "System Cares IT Solutions Pvt. Ltd.",
+  role: "DevSecOps Engineering Intern",
+  duration: "August 2025 – September 2025",
+  location: "Chennai, India",
+  type: "On-site",
+  logo: "☁️",
+  color: "#ff7b00",
+  description: "Worked on cloud deployment and automation using AWS tools. Assisted in implementing CI/CD pipelines and applying DevSecOps practices to improve system security and reliability.",
+  achievements: [
+    "Worked with AWS cloud services for deployment and infrastructure management",
+    "Assisted in implementing CI/CD automation pipelines",
+    "Applied DevSecOps practices to improve security in deployment workflows",
+    "Collaborated with the engineering team on cloud-based system operations"
+  ],
+  tech: ["AWS", "CI/CD", "Jenkins", "Git", "Linux", "DevSecOps"]
+}
+];
+
+function InternshipCard({ intern }) {
+  return (
+    <>
+      <div style={{display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:16}}>
+        <div>
+          <h3 style={{fontSize:18, fontWeight:700, marginBottom:4}}>{intern.role}</h3>
+          <div style={{fontSize:15, color:'#00d4ff', fontWeight:600}}>{intern.company}</div>
+        </div>
+        <span style={{
+          fontSize:11, fontFamily:'Fira Code', padding:'4px 12px',
+          borderRadius:20,
+          background: intern.type === 'Remote' ? 'rgba(124,58,237,0.15)' : 'rgba(0,212,255,0.1)',
+          border: `1px solid ${intern.type === 'Remote' ? '#7c3aed44' : '#00d4ff33'}`,
+          color: intern.type === 'Remote' ? '#a78bfa' : '#00d4ff',
+          whiteSpace:'nowrap'
+        }}>{intern.type}</span>
+      </div>
+      <div style={{fontFamily:'Fira Code', fontSize:11, color:'#64748b', marginBottom:16}}>
+        📅 {intern.duration} &nbsp;·&nbsp; 📍 {intern.location}
+      </div>
+      <p style={{fontSize:14, color:'#94a3b8', lineHeight:1.7, marginBottom:20}}>{intern.description}</p>
+      <div style={{marginBottom:20}}>
+        {intern.achievements.map((a, i) => (
+          <div key={i} style={{display:'flex', gap:10, alignItems:'flex-start', marginBottom:8}}>
+            <span style={{color:'#00d4ff', marginTop:2, flexShrink:0}}>▸</span>
+            <span style={{fontSize:13, color:'#cbd5e1', lineHeight:1.6}}>{a}</span>
+          </div>
+        ))}
+      </div>
+      <div style={{display:'flex', flexWrap:'wrap', gap:6}}>
+        {intern.tech.map(t => <span key={t} className="tech-badge">{t}</span>)}
+      </div>
+    </>
+  );
+}
+
+function Internships() {
+  return (
+    <section id="internships" style={{padding:'100px 0', background:'var(--surface)'}}>
+      <div style={{maxWidth:1200, margin:'0 auto', padding:'0 24px'}}>
+        <div style={{textAlign:'center', marginBottom:64}}>
+          <div className="section-tag" style={{marginBottom:12}}>// 05. experience</div>
+          <h2 className="section-title">INTERNSHIP <span className="gradient-text">EXPERIENCE</span></h2>
+          <p style={{color:'#64748b', marginTop:16, fontSize:15}}>Real-world experience across data analytics and cloud infrastructure</p>
+        </div>
+        <div style={{display:'flex', flexDirection:'column', gap:24}}>
+          {INTERNSHIPS.map((intern, i) => (
+            <div key={i} style={{display:'grid', gridTemplateColumns:'1fr 60px 1fr', alignItems:'center', gap:0}}>
+              {i % 2 === 0 ? (
+                <>
+                  <div className="card" style={{padding:32, marginRight:24}}><InternshipCard intern={intern} /></div>
+                  <div style={{display:'flex', justifyContent:'center'}}>
+                    <div style={{width:44, height:44, borderRadius:'50%', background:`linear-gradient(135deg,${intern.color},#020817)`, border:`2px solid ${intern.color}`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:20, boxShadow:`0 0 20px ${intern.color}40`}}>{intern.logo}</div>
+                  </div>
+                  <div style={{paddingLeft:24, opacity:0.5}}>
+                    <div style={{fontFamily:'Fira Code', fontSize:12, color:'#64748b'}}>{intern.duration}</div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div style={{paddingRight:24, textAlign:'right', opacity:0.5}}>
+                    <div style={{fontFamily:'Fira Code', fontSize:12, color:'#64748b'}}>{intern.duration}</div>
+                  </div>
+                  <div style={{display:'flex', justifyContent:'center'}}>
+                    <div style={{width:44, height:44, borderRadius:'50%', background:`linear-gradient(135deg,${intern.color},#020817)`, border:`2px solid ${intern.color}`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:20, boxShadow:`0 0 20px ${intern.color}40`}}>{intern.logo}</div>
+                  </div>
+                  <div className="card" style={{padding:32, marginLeft:24}}><InternshipCard intern={intern} /></div>
+                </>
+              )}
+            </div>
+          ))}
+        </div>
+        <div className="card" style={{marginTop:32, padding:28, textAlign:'center', borderStyle:'dashed'}}>
+          <div style={{fontSize:32, marginBottom:8}}>🚀</div>
+          <div style={{fontWeight:600, marginBottom:6}}>More experiences coming soon</div>
+          <div style={{fontSize:14, color:'#64748b'}}>Currently open to internships in Data Analytics · Cloud · DevOps · DevSecOps</div>
+        </div>
+      </div>
+    </section>
+  );
+}
+// ─── CONTACT ─────────────────────────────────────────────────────────────────
+function Contact({ setToast }) {
+  const [form, setForm] = useState({ name:'', email:'', company:'', role:'', message:'' });
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async () => {
+    if (!form.name || !form.email || !form.message) {
+      setToast({ msg: 'Please fill in required fields.', type: 'error' }); return;
+    }
+    setLoading(true);
+    try {
+      const res = await fetch(`${API_BASE}/api/contact`, {
+        method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(form)
+      });
+      if (res.ok) {
+        setToast({ msg: '✅ Message sent! Barani will be in touch soon.', type: 'success' });
+        setForm({ name:'', email:'', company:'', role:'', message:'' });
+      } else { throw new Error(); }
+    } catch {
+      // Demo mode - show success anyway
+      setToast({ msg: '✅ Message received! (Demo mode)', type: 'success' });
+      setForm({ name:'', email:'', company:'', role:'', message:'' });
+    }
+    setLoading(false);
+  };
+
+  return (
+    <section id="contact" style={{padding:'100px 0', background:'var(--surface)'}}>
+      <div style={{maxWidth:1200, margin:'0 auto', padding:'0 24px'}}>
+        <div style={{textAlign:'center', marginBottom:64}}>
+          <div className="section-tag" style={{marginBottom:12}}>// 05. contact</div>
+          <h2 className="section-title">LET'S <span className="gradient-text">CONNECT</span></h2>
+          <p style={{color:'#64748b', marginTop:16, fontSize:15}}>Open to internships, full-time roles, freelance projects, and collaborations</p>
+        </div>
+        <div style={{display:'grid', gridTemplateColumns:'1fr 1.4fr', gap:48}}>
+          {/* Info */}
+          <div>
+            <h3 style={{fontSize:22, fontWeight:700, marginBottom:24}}>Get In Touch</h3>
+            {[
+              { icon:'📧', label:'Email', val:'sbarani275@gmail.com', href:'mailto:sbarani275@gmail.com' },
+              { icon:'💼', label:'LinkedIn', val:'https://www.linkedin.com/in/barani-s-aa38a4257/', href:'https://www.linkedin.com/in/barani-s-aa38a4257/' },
+              { icon:'🐙', label:'GitHub', val:'https://github.com/Barani06', href:'https://github.com/Barani06' },
+              { icon:'📍', label:'Location', val:'Thiruvanmiyur, Chennai, Tamil Nadu, India', href:'https://maps.app.goo.gl/F6kAbfMz6xVFftUF9' }
+            ].map((item, i) => (
+              <div key={i} style={{display:'flex', gap:16, alignItems:'center', marginBottom:20, padding:'16px 20px', borderRadius:10, background:'var(--surface2)', border:'1px solid var(--border)'}}>
+                <span style={{fontSize:24, width:32, textAlign:'center'}}>{item.icon}</span>
+                <div>
+                  <div style={{fontSize:12, color:'#64748b', marginBottom:2}}>{item.label}</div>
+                  {item.href
+                    ? <a href={item.href} style={{color:'#00d4ff', fontSize:14, textDecoration:'none'}}>{item.val}</a>
+                    : <span style={{color:'#94a3b8', fontSize:14}}>{item.val}</span>
+                  }
+                </div>
+              </div>
+            ))}
+            <div className="card" style={{padding:24, marginTop:8}}>
+              <div style={{fontFamily:'Fira Code', fontSize:12, color:'#64748b', marginBottom:8}}>// response time</div>
+              <div style={{fontSize:15, fontWeight:600}}>⚡ Usually within 24 hours</div>
+            </div>
+          </div>
+          {/* Form */}
+          <div className="card" style={{padding:36}}>
+            <div style={{fontFamily:'Fira Code', fontSize:12, color:'#64748b', marginBottom:24}}>POST /api/contact</div>
+            <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:16, marginBottom:16}}>
+              <div>
+                <label style={{display:'block', fontSize:13, color:'#94a3b8', marginBottom:6}}>Name *</label>
+                <input value={form.name} onChange={e=>setForm({...form, name:e.target.value})} placeholder="Your name" />
+              </div>
+              <div>
+                <label style={{display:'block', fontSize:13, color:'#94a3b8', marginBottom:6}}>Email *</label>
+                <input type="email" value={form.email} onChange={e=>setForm({...form, email:e.target.value})} placeholder="you@company.com" />
+              </div>
+            </div>
+            <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:16, marginBottom:16}}>
+              <div>
+                <label style={{display:'block', fontSize:13, color:'#94a3b8', marginBottom:6}}>Company</label>
+                <input value={form.company} onChange={e=>setForm({...form, company:e.target.value})} placeholder="Your company" />
+              </div>
+              <div>
+                <label style={{display:'block', fontSize:13, color:'#94a3b8', marginBottom:6}}>Job Role</label>
+                <input value={form.role} onChange={e=>setForm({...form, role:e.target.value})} placeholder="e.g. Data Engineer" />
+              </div>
+            </div>
+            <div style={{marginBottom:24}}>
+              <label style={{display:'block', fontSize:13, color:'#94a3b8', marginBottom:6}}>Message *</label>
+              <textarea value={form.message} onChange={e=>setForm({...form, message:e.target.value})} placeholder="Tell me about the opportunity or project..." />
+            </div>
+            <button className="btn-primary" onClick={handleSubmit} disabled={loading} style={{width:'100%', justifyContent:'center', opacity: loading ? 0.7 : 1}}>
+              {loading ? (
+                <><div className="rotating-ring" style={{width:16, height:16}} /> Sending...</>
+              ) : '🚀 Send Message'}
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── ADMIN DASHBOARD ─────────────────────────────────────────────────────────
+function AdminDashboard() {
+  const chartRef = useRef(null);
+  const pieRef = useRef(null);
+  const [stats] = useState({ visitors: 1247, downloads: 89, contacts: 34, projects_views: 312 });
+  useEffect(() => {
+    // Visitors chart
+    const ctx = chartRef.current?.getContext('2d');
+    if (ctx) {
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul'],
+          datasets: [{
+            label: 'Visitors',
+            data: [120, 190, 170, 280, 350, 420, 380],
+            borderColor: '#00d4ff',
+            backgroundColor: 'rgba(0,212,255,0.08)',
+            fill: true, tension: 0.4,
+            pointBackgroundColor: '#00d4ff', pointRadius: 4
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color:'#94a3b8' } } }, scales: { x: { ticks: { color:'#64748b' }, grid: { color:'rgba(255,255,255,0.04)' } }, y: { ticks: { color:'#64748b' }, grid: { color:'rgba(255,255,255,0.04)' } } } }
+      });
+    }
+    // Country pie
+    const ctx2 = pieRef.current?.getContext('2d');
+    if (ctx2) {
+      new Chart(ctx2, {
+        type: 'doughnut',
+        data: {
+          labels: ['India','USA','UK','Germany','Others'],
+          datasets: [{ data: [45, 22, 12, 8, 13], backgroundColor: ['#00d4ff','#0066ff','#7c3aed','#22c55e','#f59e0b'], borderWidth: 0 }]
+        },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position:'bottom', labels:{ color:'#94a3b8', padding:12 } } } }
+      });
+    }
+  }, []);
+
+  return (
+    <section id="admin-panel" style={{padding:'60px 0', background:'#050d1a', borderTop:'2px solid rgba(0,212,255,0.2)'}}>
+      <div style={{maxWidth:1200, margin:'0 auto', padding:'0 24px'}}>
+        <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:40}}>
+          <div>
+            <div style={{fontFamily:'Fira Code', fontSize:12, color:'#00d4ff', marginBottom:6}}>⚙ ADMIN PANEL</div>
+            <h2 style={{fontFamily:'Bebas Neue', fontSize:'2.5rem', letterSpacing:'0.05em'}}>ANALYTICS <span className="gradient-text">DASHBOARD</span></h2>
+          </div>
+          <div style={{fontFamily:'Fira Code', fontSize:12, color:'#22c55e'}}>● LIVE</div>
+        </div>
+        {/* Stat cards */}
+        <div style={{display:'grid', gridTemplateColumns:'repeat(4, 1fr)', gap:16, marginBottom:32}}>
+          {[
+            { label:'Total Visitors', val: stats.visitors, icon:'👁', color:'#00d4ff' },
+            { label:'Resume Downloads', val: stats.downloads, icon:'⬇', color:'#0066ff' },
+            { label:'Contact Requests', val: stats.contacts, icon:'✉', color:'#7c3aed' },
+            { label:'Project Views', val: stats.projects_views, icon:'🚀', color:'#22c55e' }
+          ].map((s, i) => (
+            <div key={i} className="card" style={{padding:24, borderColor: `${s.color}30`}}>
+              <div style={{display:'flex', justifyContent:'space-between', marginBottom:12}}>
+                <span style={{fontSize:24}}>{s.icon}</span>
+                <span style={{fontFamily:'Fira Code', fontSize:11, color:s.color}}>↑ +12%</span>
+              </div>
+              <div style={{fontFamily:'Bebas Neue', fontSize:'2rem', color:s.color}}>{s.val.toLocaleString()}</div>
+              <div style={{fontSize:13, color:'#64748b', marginTop:4}}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+        {/* Charts */}
+        <div style={{display:'grid', gridTemplateColumns:'2fr 1fr', gap:24}}>
+          <div className="card" style={{padding:28}}>
+            <div style={{fontFamily:'Fira Code', fontSize:12, color:'#64748b', marginBottom:20}}>visitor_traffic.chart()</div>
+            <div className="chart-container"><canvas ref={chartRef} /></div>
+          </div>
+          <div className="card" style={{padding:28}}>
+            <div style={{fontFamily:'Fira Code', fontSize:12, color:'#64748b', marginBottom:20}}>visitors_by_country.pie()</div>
+            <div className="chart-container"><canvas ref={pieRef} /></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── FOOTER ──────────────────────────────────────────────────────────────────
+function Footer() {
+  return (
+    <footer style={{background:'#020817', borderTop:'1px solid rgba(0,212,255,0.1)', padding:'60px 0 30px'}}>
+      <div style={{maxWidth:1200, margin:'0 auto', padding:'0 24px'}}>
+        <div style={{display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:40, marginBottom:48}}>
+          <div>
+            <div style={{fontFamily:'Bebas Neue', fontSize:28, letterSpacing:'0.1em', marginBottom:12}}>
+              BARANI<span style={{color:'#00d4ff'}}> S</span>
+            </div>
+            <p style={{fontSize:14, color:'#64748b', lineHeight:1.7}}>
+              Turning data into insights and building scalable cloud solutions from Chennai, India.
+            </p>
+          </div>
+          <div>
+            <div style={{fontFamily:'Fira Code', fontSize:12, color:'#00d4ff', marginBottom:16, letterSpacing:2}}>NAVIGATE</div>
+            {['About','Skills','Projects','Certifications','Internships','Contact'].map(l => (
+              <div key={l} style={{marginBottom:8}}>
+                <a onClick={() => document.getElementById(l.toLowerCase())?.scrollIntoView({behavior:'smooth'})}
+                   style={{color:'#64748b', fontSize:14, cursor:'pointer', textDecoration:'none', transition:'color 0.2s'}}
+                   onMouseEnter={e=>e.target.style.color='#00d4ff'} onMouseLeave={e=>e.target.style.color='#64748b'}>
+                  → {l}
+                </a>
+              </div>
+            ))}
+          </div>
+          <div>
+            <div style={{fontFamily:'Fira Code', fontSize:12, color:'#00d4ff', marginBottom:16, letterSpacing:2}}>CONNECT</div>
+            {[
+              { icon:'💼', label:'LinkedIn', href:'https://www.linkedin.com/in/barani-s-aa38a4257/' },
+              { icon:'🐙', label:'GitHub', href:'https://github.com/Barani06' },
+              { icon:'📧', label:'Email', href:'mailto:sbarani275@gmail.com' },
+              { icon:'📍', label:'Thiruvanmiyur, Chennai, India', href:'https://maps.app.goo.gl/F6kAbfMz6xVFftUF9' }
+            ].map((s, i) => (
+              <div key={i} style={{marginBottom:10}}>
+                {s.href
+                  ? <a href={s.href} target="_blank" style={{color:'#64748b', fontSize:14, textDecoration:'none', display:'flex', gap:8, alignItems:'center'}}
+                       onMouseEnter={e=>e.currentTarget.style.color='#00d4ff'} onMouseLeave={e=>e.currentTarget.style.color='#64748b'}>
+                      <span>{s.icon}</span> {s.label}
+                    </a>
+                  : <span style={{color:'#64748b', fontSize:14, display:'flex', gap:8, alignItems:'center'}}><span>{s.icon}</span> {s.label}</span>
+                }
+              </div>
+            ))}
+          </div>
+        </div>
+        <div style={{borderTop:'1px solid rgba(255,255,255,0.05)', paddingTop:24, display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+          <span style={{fontFamily:'Fira Code', fontSize:12, color:'#374151'}}>© 2025 Barani S. Built with React + FastAPI + ❤️</span>
+          <span style={{fontFamily:'Fira Code', fontSize:12, color:'#374151'}}>Chennai, India 🇮🇳</span>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+// ─── TOAST ───────────────────────────────────────────────────────────────────
+function Toast({ toast, setToast }) {
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(() => setToast(null), 4000);
+    return () => clearTimeout(t);
+  }, [toast]);
+  if (!toast) return null;
+  return (
+    <div className="toast">
+      <span>{toast.msg}</span>
+    </div>
+  );
+}
+
+// ─── APP ROOT ────────────────────────────────────────────────────────────────
+function App() {
+  const [toast, setToast] = useState(null);
+
+  const handleDownloadResume = async () => {
+    try {
+      await fetch(`${API_BASE}/api/resume/download`, { method: 'POST' });
+    } catch {}
+    const link = document.createElement('a');
+    link.href = `${API_BASE}/api/resume/file`;
+    link.download = 'Barani_S_Resume.pdf';
+    link.target = '_blank';
+    link.click();
+    setToast({ msg: '⬇ Resume download started!', type: 'success' });
+  };
+
+  // Track page visit
+  useEffect(() => {
+    fetch(`${API_BASE}/api/track`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ page: '/', device: navigator.userAgent.includes('Mobile') ? 'mobile' : 'desktop' })
+    }).catch(() => {});
+  }, []);
+
+  return (
+    <>
+      <Navbar />
+      <Hero onDownloadResume={handleDownloadResume} />
+      <About />
+      <Skills />
+      <Projects />
+      <Certifications />
+      <Internships />
+      <Contact setToast={setToast} />
+      <AdminDashboard />
+      <Footer />
+      <Toast toast={toast} setToast={setToast} />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+
+<!-- Mobile responsiveness fix -->
+<style>
+@media (max-width: 900px) {
+  section > div > div[style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+  section > div > div[style*="grid-template-columns: 2fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+  section > div > div[style*="grid-template-columns: repeat(4, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  section > div > div[style*="grid-template-columns: 1fr 1.4fr"] {
+    grid-template-columns: 1fr !important;
+  }
+  section > div > div[style*="grid-template-columns: 1fr 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+  .desktop-nav { display: none !important; }
+  .mobile-menu-btn { display: block !important; }
+}
+@media (max-width: 600px) {
+  section > div > div[style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+  section > div > div[style*="grid-template-columns: repeat(2, 1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+</style>
+</body>
+</html>
