@@ -912,9 +912,9 @@ function Contact({ setToast }) {
     }
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/api/contact`, {
-        method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(form)
-      });
+      const res = await fetch('https://formspree.io/f/xxxxxxxx', {
+  method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(form)
+});
       if (res.ok) {
         setToast({ msg: '✅ Message sent! Barani will be in touch soon.', type: 'success' });
         setForm({ name:'', email:'', company:'', role:'', message:'' });
