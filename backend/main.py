@@ -46,8 +46,8 @@ EMAIL_FROM = os.getenv("EMAIL_FROM", "sbarani275@gmail.com")
 EMAIL_TO = os.getenv("EMAIL_TO", "sbarani275@gmail.com")
 SMTP_HOST = os.getenv("SMTP_HOST", "smtp.gmail.com")
 SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
-SMTP_USER = os.getenv("SMTP_USER", "sbarani275@gmail.com")
-SMTP_PASS = os.getenv("SMTP_PASS", "qewh pzam ugec svbr")
+SMTP_USER = os.getenv("SMTP_USER", "")
+SMTP_PASS = os.getenv("SMTP_PASS", "")
 RESUME_PATH = os.getenv("RESUME_PATH", "static/Barani_S_Resume.pdf")
 
 # ── DB Pool ───────────────────────────────────────────────────────────────────
