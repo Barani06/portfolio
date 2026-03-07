@@ -379,3 +379,4 @@ async def mark_contact_read(contact_id: int):
     async with db_pool.acquire() as conn:
         await conn.execute("UPDATE contact_requests SET is_read = TRUE WHERE id = $1", contact_id)
     return {"updated": True}
+app=app
