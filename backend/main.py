@@ -4,7 +4,7 @@ FastAPI + PostgreSQL | Full-stack portfolio backend
 Author: Barani S
 """
 
-from fastapi import FastAPI, HTTPException, Depends, Request
+from fastapi import FastAPI, HTTPException, Depends, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel, EmailStr
@@ -37,7 +37,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
+@app.options("/{rest_of_path:path}")
+async def preflight_handler(rest_of_path: str, response: Response):
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    return {}
 # ── Config ───────────────────────────────────────────────────────────────────
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://portfolio_user:portfolio_pass@db:5432/portfolio_db")
 GITHUB_USERNAME = os.getenv("GITHUB_USERNAME", "Barani06")
