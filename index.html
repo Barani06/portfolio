@@ -1157,12 +1157,12 @@ function Toast({ toast, setToast }) {
 function App() {
   const [toast, setToast] = useState(null);
 
-  const handleDownloadResume = async () => {
+const handleDownloadResume = async () => {
     try {
       await fetch(`${API_BASE}/api/resume/download`, { method: 'POST' });
     } catch {}
     const link = document.createElement('a');
-    link.href = `${API_BASE}/api/resume/file`;
+    link.href = 'https://barani06.github.io/portfolio/Barani_S_Resume.pdf';
     link.download = 'Barani_S_Resume.pdf';
     link.target = '_blank';
     link.click();
